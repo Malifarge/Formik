@@ -25,6 +25,9 @@ fieldset div{
 
 fieldset{
     text-align: center;
+    border: none;
+    height: 30px;
+    width: 330px;
 }
 
 small{
