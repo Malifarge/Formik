@@ -5,6 +5,10 @@ import Input from "./Components/Input";
 
 import './styles/App.css'
 
+
+const limitDate = new Date()
+limitDate.setFullYear(limitDate.getFullYear() - 18)
+
 const App = () =>{
 
   const formik=useFormik({
@@ -25,11 +29,7 @@ const App = () =>{
       username: Yup.string().required('username required').min(4,'username too short'),
       password: Yup.string().required('password required').min(8,'password too short').matches( /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{8,})/,'the password must have at least one upper case, one lower case, one number and one special character'),
       confirmpassword: Yup.string().required('password confirmation required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
-      birthday: Yup.date().required('birthday required').test("age", "You must be 18 or older", function(birthdate) {
-        const cutoff = new Date();
-        cutoff.setFullYear(cutoff.getFullYear() - 18);      
-        return birthdate <= cutoff;
-      }),
+      birthday: Yup.date().required('birthday required').max(limitDate, 'You must be 18 or older'),
       github: Yup.string().required('github required').url('github must be a url')
     }),
     onSubmit: values =>{
