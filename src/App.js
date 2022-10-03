@@ -3,6 +3,8 @@ import * as Yup from 'yup'
 
 import Input from "./Components/Input";
 
+import './styles/App.css'
+
 const App = () =>{
 
   const formik=useFormik({
@@ -40,6 +42,9 @@ const App = () =>{
 
   return(
     <>
+
+    <h1>User info</h1>
+
     <form onSubmit={formik.handleSubmit}>
       <Input
         type='email'
