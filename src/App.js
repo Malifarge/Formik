@@ -21,7 +21,7 @@ const App = () =>{
       firstname: Yup.string().required('Firstname required'),
       lastname: Yup.string().required('Lastname required'),
       username: Yup.string().required('username required').min(4,'username too short'),
-      password: Yup.string().required('password required').min(8,'password too short').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])$/,'the password must have at least one upper case, one lower case, one number and one special character'),
+      password: Yup.string().required('password required').min(8,'password too short').matches( /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{8,})/,'the password must have at least one upper case, one lower case, one number and one special character'),
       confirmpassword: Yup.string().required('password confirmation required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
       birthday: Yup.date().required('birthday required').test("age", "You must be 18 or older", function(birthdate) {
         const cutoff = new Date();
@@ -31,14 +31,15 @@ const App = () =>{
       github: Yup.string().required('github required').url('github must be a url')
     }),
     onSubmit: values =>{
-      console.log(formik.errors);
-      if(!formik.errors){
-        console.log(values);
-      }
+      console.log(values);
+        setTimeout(()=>{
+          formik.resetForm()
+        },2000)
     }
   })
 
   return(
+    <>
     <form onSubmit={formik.handleSubmit}>
       <Input
         type='email'
@@ -46,6 +47,7 @@ const App = () =>{
         placeholder='email...'
         value={formik.values.email}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.email}
       />
 
@@ -55,6 +57,7 @@ const App = () =>{
         placeholder='firstname...'
         value={formik.values.firstname}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.firstname}
       />
 
@@ -64,6 +67,7 @@ const App = () =>{
         placeholder='lastname...'
         value={formik.values.lastname}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.lastname}
       />
 
@@ -73,6 +77,7 @@ const App = () =>{
         placeholder='username...'
         value={formik.values.username}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.username}
       />
 
@@ -82,6 +87,7 @@ const App = () =>{
         placeholder='password...'
         value={formik.values.password}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.password}
       />
 
@@ -91,6 +97,7 @@ const App = () =>{
         placeholder='confirmpassword...'
         value={formik.values.confirmpassword}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.confirmpassword}
       />
 
@@ -100,6 +107,7 @@ const App = () =>{
         placeholder='birthday...'
         value={formik.values.birthday}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.birthday}
       />
 
@@ -109,12 +117,15 @@ const App = () =>{
         placeholder='github...'
         value={formik.values.github}
         handleChange={formik.handleChange}
+        disabled={formik.isSubmitting}
         error={formik.errors.github}
       />
 
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={formik.isSubmitting}>Submit</button>
        
     </form>
+    {formik.isSubmitting && <p>Succes submit</p>}
+    </>
   )
 }
 export default App;
